@@ -28,36 +28,30 @@ def checknulldata(curcheck) :
 		return 0;
 
 def inserttobanghi(id_zigbee,addr_zigbee,name,ngaysinh,sdt,thongbao,trangthai):
-	thoigian= strftime("%d-%m-%Y %H:%M:%S", localtime())
-	db = connect()
-	cur=db.cursor()
-	cur.execute("""INSERT INTO ban_ghi (ID_ZIGBEE, ADDR_ZIGBEE, TEN, NGAYSINH, SODT, THONGBAO, TRANGTHAI, THOIGIAN) VALUES (%s, %s, %s,%s, %s, %s, %s, %s)""",(id_zigbee,addr_zigbee,name,ngaysinh,sdt,thongbao,trangthai,thoigian))
-	db.commit()
-	db.close()
-	action =True
+	try : # neu loi insert thi thong bao loi 
+		thoigian= strftime("%d-%m-%Y %H:%M:%S", localtime())
+		db = connect()
+		cur=db.cursor()
+		cur.execute("""INSERT INTO ban_ghi (ID_ZIGBEE, ADDR_ZIGBEE, TEN, NGAYSINH, SODT, THONGBAO, TRANGTHAI, THOIGIAN) VALUES (%s, %s, %s,%s, %s, %s, %s, %s)""",(id_zigbee,addr_zigbee,name,ngaysinh,sdt,thongbao,trangthai,thoigian))
+		db.commit()
+		db.close()
+		action =True
+	except :
+		action =False
 	return action	
 		
-	
-	
-	
-# Write card readings to database
-def write(tagId,action):
-    db = connect()
-    c = db.cursor()
-    currentTime=strftime("%d-%m-%Y %H:%M:%S", localtime())
-    c.execute("""INSERT INTO readings (tagId, time, action) VALUES (%s, %s, %s)""",(tagId,currentTime,action))
-    db.commit()
-    db.close()
-    action ="Submitted. Have a nice day!"
-    return action
+def inserttoadd_device(id_zigbee,addr_zigbee):
+	try : # neu loi insert thi thong bao loi 
+		thoigian= strftime("%d-%m-%Y %H:%M:%S", localtime())
+		db = connect()
+		cur=db.cursor()
+		cur.execute("""INSERT INTO add_device (ID_ZIGBEE, ADDR_ZIGBEE, TIME) VALUES (%s, %s, %s)""",(id_zigbee,addr_zigbee,thoigian))
+		db.commit()
+		db.close()
+		action =True
 
-# Write new card registration to database 
-def writeUser(userId,tagId,permission):
-    db = connect()
-    c = db.cursor()
-    added=strftime("%d-%m-%Y %H:%M:%S", localtime())
-    c.execute("""INSERT INTO cards (userId, tagId, added, permission) VALUES (%s, %s, %s, %s)""",(userId,tagId,added,permission))
-    db.commit()
-    db.close()
-    action ="New card user added!"
-    return action
+	except :
+		action =False
+	return action	
+	
+	
